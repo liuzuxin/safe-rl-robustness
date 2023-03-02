@@ -95,6 +95,11 @@ To evaluate a trained model, run:
 python script/eval.py -d path_to_model
 ```
 
+To evaluate multiple trained model in parallel:
+```
+python script/evaluation.py -d path_to_model -e env_name
+```
+
 The complete hyper-parameters can be found in `script/config/config_robust_ppo.yaml`. 
 
 In particular, PPO-Lagrangian has different robust training modes, which are specified by the `rs_mode` parameter. We detail the modes in the following table.
