@@ -1,6 +1,3 @@
-import os.path as osp
-import os
-
 from rsrl.evaluator import Evaluator
 from rsrl.util.run_util import setup_eval_configs
 
@@ -13,8 +10,7 @@ if __name__ == '__main__':
     parser.add_argument('--pretrain_dir', '-pre', type=str, default=None)
 
     parser.add_argument('--load_dir', '-d', type=str, default=None)
-    parser.add_argument('--optimal', action="store_true")
-    parser.add_argument('--itr', '-i', type=int, default=0)
+    parser.add_argument('--itr', '-i', type=int, default=None)
 
     parser.add_argument('--mode', '-m', type=str, default='eval')
     parser.add_argument('--seed', '-s', type=int, default=0)
@@ -26,20 +22,14 @@ if __name__ == '__main__':
     parser.add_argument('--sleep', type=float, default=0.003)
     args = parser.parse_args()
 
-    load_dir = args.load_dir
-    if not args.optimal:
-        itr = args.itr
-
-    load_dirs = [load_dir]
-
-    assert load_dir is not None, "The load_path parameter has not been specified!!!"
-    model_path, config = setup_eval_configs(load_dir, itr)
+    assert args.load_dir is not None, "The load_path parameter has not been specified!!!"
+    model_path, config = setup_eval_configs(args.load_dir, args.itr)
 
     # update config
     config["evaluate_episode_num"] = 1
     config["epochs"] = args.epochs
     config["data_dir"] += "_eval"
-    config["eval_attackers"] = ["amad", "mad", "max_cost", "max_reward", "uniform"]
+    config["eval_attackers"] = ["amad", "max_cost", "max_reward", "uniform", "mad"]
 
     evaluator = Evaluator(**config, config_dict=config)
     evaluator.eval(model_path)

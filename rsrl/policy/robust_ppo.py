@@ -149,12 +149,3 @@ class RobustPPOLagrangian(OnPolicyBase):
                           Lagrangian=to_ndarray(multiplier),
                           QcRet=torch.mean(data["cost_ret"]).item(),
                           **pi_info)
-
-
-    def load_model(self, path):
-        actor, critic, qc, critic2, qc2 = torch.load(path)
-        self.actor = actor
-        self.critic = critic
-        self.qc = qc
-        self.critic2 = critic2
-        self.qc2 = qc2

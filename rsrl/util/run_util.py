@@ -34,20 +34,14 @@ def find_config_dir(dir, depth=0):
 
 
 def find_model_path(dir, itr=None):
-    # if itr == None: return optimal model path
-    # else: return itr model path
     if itr is not None:
         model = "model_" + str(itr) + ".pt"
-        model_path = osp.join(dir, model)
-        if not osp.exists(model_path):
-            raise ValueError("Model doesn't exist: " + model_path)
-        return model_path
     else:
         model = "model.pt"
-        model_path = osp.join(dir, model)
-        if not osp.exists(model_path):
-            raise ValueError("Model doesn't exist: " + model_path)
-        return model_path
+    model_path = osp.join(dir, model)
+    if not osp.exists(model_path):
+        raise ValueError("Model doesn't exist: " + model_path)
+    return model_path
 
 
 def setup_eval_configs(dir, itr=None):
