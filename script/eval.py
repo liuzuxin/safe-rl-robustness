@@ -18,7 +18,6 @@ if __name__ == '__main__':
     parser.add_argument('--device', type=str, default="cpu")
     parser.add_argument('--exp_name', type=str, default=None)
     parser.add_argument('--suffix', '--id', type=str, default=None)
-    parser.add_argument('--no_render', action="store_true")
     parser.add_argument('--sleep', type=float, default=0.003)
     args = parser.parse_args()
 
