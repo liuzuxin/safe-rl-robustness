@@ -1,0 +1,107 @@
+###################### runner configs ######################
+mode: 'train'
+seed: 0
+device: "cpu"
+# if device is gpu, specify the gpu id
+device_id: 0
+# if device is cpu, specify the thread num
+threads: 4
+policy_name: "robust_ppo"
+
+# training configs
+epochs: 500
+save_best_epoch: 0
+save_every_epoch: 10
+warmup: False
+evaluate_episode_num: 1
+# whether use the attackers during evaluation, full list is
+# ["mad", "amad", "uniform", "max_cost", "max_reward"]
+eval_attackers: ["max_cost"]
+
+exp_name: null
+# data dir to save the logger files
+data_dir: null
+load_dir: null
+verbose: True
+
+suffix: null
+
+###################### env configs ######################
+env_cfg:
+    env_name: 'SafeAntRun-v0'
+    # Maximum steps per episode, use this to terminate one episode if it takes too many steps.
+    # This is a environment-specific parameter. Determine this carefully based on your gym env.
+    # If this is -1, it will be based on the env._max_episode_steps
+    timeout_steps: 300
+    cost_limit: &COST_LIM 5
+    # cost normalizer is used to scale the binary indicator cost. The cost in the replay buffer would be 1/cost_normalizer
+    cost_normalizer: &CN 5
+
+###################### adversary configs ######################
+adv_cfg:
+    noise_scale: &NS 0.05
+    attack_freq: 1
+    # MAD attacker config
+    mad_cfg: &MAD
+        lr_adv: 0.1
+        max_iterations: 60
+        tol: 1.0e-4
+        eps_tol: 1.0e-4
+    amad_cfg: 
+        lr_adv: 0.05
+        max_iterations: 60
+        tol: 1.0e-4
+        eps_tol: 1.0e-4
+        # only attack the states with attack_fraction highest qc values
+        attack_fraction: 0.1
+
+    # Critic attacker config
+    max_cost_cfg:
+        lr_adv: 0.1
+        max_iterations: 60
+        tol: 1.0e-4
+        eps_tol: 1.0e-4
+        reward_weight: 0
+        cost_weight: 0.5
+    max_reward_cfg:
+        lr_adv: 0.1
+        max_iterations: 60
+        tol: 1.0e-4
+        eps_tol: 1.0e-4
+        reward_weight: 0.5
+        cost_weight: 0
+    min_reward_cfg:
+        lr_adv: 0.1
+        max_iterations: 60
+        tol: 1.0e-4
+        eps_tol: 1.0e-4
+        reward_weight: -0.5
+        cost_weight: 0
+
+    uniform_cfg: {}
+
+policy_cfg:
+    KP: &K_P 0.1
+    KI: &K_I 0.003
+    KD: &K_D 0.001
+    per_state: False
+    actor_lr: 0.0003
+    critic_lr: 0.001
+    hidden_sizes: [128, 128]
+    gamma: 0.99
+    polyak: 0.995
+    rs_mode: "vanilla"
+    kl_coef: 10
+    lam: 0.97
+    batch_size: 300
+    buffer_size: 100000
+    # PPO specific config
+    clip_ratio: 0.2
+    clip_ratio_adv: 0.8
+    target_kl: 0.01
+    train_actor_iters: 80
+    train_critic_iters: 80
+    interact_steps: &IS 10000
+    episode_rerun_num: 40
+    start_epoch: 20
+    decay_epoch: 100
