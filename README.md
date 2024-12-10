@@ -108,9 +108,9 @@ In particular, PPO-Lagrangian has different robust training modes, which are spe
 |:---------:|:-------:|:------------:|:------------:|:-----------:|:-------:|:-----------:|:-----------:|
 |    Mode   | vanilla |   max_cost   |  max_reward  |   uniform   |    kl   |     klmc    |     klmr    |
 
-- The proposed adversarial training methods correspond to the `max_cost, max_cost` modes.
+- The proposed adversarial training methods correspond to the `max_cost, max_reward` modes.
 - For SA-PPOL series, the modes are `kl, klmc, klmr`. The SA-PPOL with the original MAD attacker is the `kl` mode, the SA-PPOL method with the MC and MR attackers are `klmc` and `klmr` respectively. 
-- Note that FOCOPS also supports the adversarail training modes `max_cost, max_cost` and `uniform, vanilla`.
+- Note that FOCOPS also supports the adversarail training modes `max_cost, max_reward` and `uniform, vanilla`.
 
 ## Pretrained weights
 
